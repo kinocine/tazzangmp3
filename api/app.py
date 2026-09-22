@@ -1,9 +1,12 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, request, send_file
+from flask_cors import CORS
 import asyncio, os, re
 from datetime import datetime
 import tempfile
 
 app = Flask(__name__)
+CORS(app)  # ← 깃허브 페이지에서 호출 허용
+
 VOICES = {"여자 SunHi (감성 리뷰)": "ko-KR-SunHiNeural", "남자 InJoon (담백 리뷰)": "ko-KR-InJoonNeural"}
 
 def sanitize(name):
@@ -22,7 +25,7 @@ def tts():
     voice_id = VOICES.get(voice_display, "ko-KR-SunHiNeural")
     if not text: return "대본 없음", 400
     clean = sanitize(project)
-    filename = f"{clean}_{datetime.now().strftime('%m%d_%H%M%S')}.mp3"
+    filename = f"{clean}_{datetime.now().strftime('%m%d_%H%M')}.mp3"
     out_path = os.path.join(tempfile.gettempdir(), filename)
     asyncio.run(do_tts(text, voice_id, out_path))
     return send_file(out_path, as_attachment=True, download_name=filename)
