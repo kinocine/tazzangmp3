@@ -2,155 +2,156 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>타짱MP3 - TTS 자동 만들기</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>타짱MP3 모바일 v1.1</title>
 <style>
-  :root{--blue:#2b78e4; --bg:#f6f7f9}
-  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
-  body{margin:0; background:var(--bg); font-family:-apple-system,BlinkMacSystemFont,"맑은 고딕",sans-serif; color:#111}
-  .wrap{max-width:520px; margin:0 auto; padding:12px}
-  .header{display:flex; align-items:center; justify-content:space-between; padding:12px 4px}
-  .header h1{font-size:18px; margin:0}
-  .header a{font-size:12px; color:#666; text-decoration:none; border:1px solid #ddd; padding:6px 10px; border-radius:20px; background:#fff}
-  .card{background:#fff; border-radius:18px; padding:18px; box-shadow:0 8px 30px rgba(0,0,0,.06); margin-bottom:12px}
-  label{font-weight:700; font-size:13px; display:block; margin:14px 0 6px}
-  label:first-child{margin-top:0}
-  select, input, textarea{width:100%; padding:13px; border:1px solid #e2e2e2; border-radius:12px; font-size:15px; background:#fff}
-  textarea{height:240px; line-height:1.5; resize:vertical}
-  .row{display:flex; gap:8px}
-  .hint{font-size:11px; color:#888; margin-top:6px; line-height:1.4}
-  .blue{color:var(--blue)}
-  .btn{width:100%; padding:15px; background:var(--blue); color:#fff; border:0; border-radius:14px; font-size:16px; font-weight:800; margin-top:16px}
-  .btn:disabled{background:#b9c9e6}
-  .btn2{width:100%; padding:12px; background:#111; color:#fff; border:0; border-radius:12px; font-size:14px; margin-top:8px; display:none}
-  .status{margin-top:12px; font-size:13px; color:#444; background:#f2f5ff; padding:10px 12px; border-radius:10px; display:none}
-  .badge{display:inline-block; font-size:10px; background:#111; color:#fff; padding:3px 7px; border-radius:20px; margin-left:6px}
-  .foot{font-size:11px; color:#999; text-align:center; padding:12px}
-  .setting{font-size:11px; color:#aaa; text-align:right; margin-top:8px}
-  .setting input{width:auto; padding:4px; font-size:11px; border:1px dashed #ddd; border-radius:6px}
+*{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{background:#f5f5f7;margin:0;padding:12px;color:#111}
+.card{background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.06);max-width:600px;margin:0 auto}
+h1{font-size:20px;margin:0 0 4px;display:flex;align-items:center;gap:8px}
+.badge{font-size:11px;background:#111;color:#fff;padding:3px 8px;border-radius:999px}
+label{font-weight:700;font-size:14px;margin:14px 0 6px;display:block}
+select,input,textarea{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;font-size:15px}
+textarea{min-height:160px;resize:vertical}
+.btn{width:100%;padding:14px;border:0;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer;margin-top:10px}
+.btn-blue{background:#1a73e8;color:#fff}
+.btn-black{background:#111;color:#fff}
+.status{margin-top:12px;padding:10px 12px;background:#e8f5e9;border-radius:10px;font-size:13px;display:none}
+.history{margin-top:18px;border-top:1px solid #eee;padding-top:12px}
+.history h3{font-size:14px;margin:0 0 8px}
+.hist-item{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:#f9f9fb;border-radius:8px;margin-bottom:6px;font-size:13px}
+.hist-item b{max-width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.small{font-size:11px;color:#777;margin-top:8px;text-align:center}
+a.top-link{position:absolute;top:12px;right:12px;font-size:12px;text-decoration:none;border:1px solid #ddd;padding:6px 10px;border-radius:999px;background:#fff;color:#333}
+.wrap{position:relative}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="header">
-    <h1>🎙 타짱MP3 <span class="badge">모바일</span></h1>
-    <a href="../">← 타짱 에디터</a>
-  </div>
+<a class="top-link" href="https://kinocine.github.io/tazzang/">← 타짱 에디터</a>
+<h1>🎙️ 타짱MP3 <span class="badge">모바일</span></h1>
+<div class="card">
+<label>1. 목소리 (MS 서버)</label>
+<select id="voice">
+<option>여자 SunHi (감성 리뷰) - 추천</option>
+<option>남자 InJoon (담백 리뷰)</option>
+</select>
 
-  <div class="card">
-    <label>1. 목소리 (MS 서버)</label>
-    <select id="voice">
-      <option value="ko-KR-SunHiNeural">여자 SunHi (감성 리뷰) - 추천</option>
-      <option value="ko-KR-InJoonNeural">남자 InJoon (담백 리뷰)</option>
-    </select>
+<label>2. 파일명 / 프로젝트명</label>
+<input id="project" value="이창동인터뷰_0922" placeholder="예: 이창동인터뷰">
+<div style="font-size:12px;color:#666;margin-top:4px">→ <span id="preview">이창동인터뷰_0922_SunHi.mp3</span> 형식으로 저장됨. 나중에 tazzang 에디터 오디오 트랙에 바로 넣으면 됨.</div>
 
-    <label>2. 파일명 / 프로젝트명</label>
-    <div class="row">
-      <input id="project" type="text" placeholder="예: 이창동인터뷰, 넷플릭스영화리뷰" value="이창동인터뷰">
-    </div>
-    <div class="hint blue">→ 이창동인터뷰_0922_0830_SunHi.mp3 형식으로 저장됨. 나중에 tazzang 에디터 오디오 트랙에 바로 넣으면 됨.</div>
+<label>3. 대본</label>
+<textarea id="script" placeholder="여기에 대본을 붙여넣으세요...">여러분 동전 하나 던져서 살고 죽는 게임 해보신 적 있으십니까?</textarea>
 
-    <label>3. 대본</label>
-    <textarea id="text" placeholder="여기에 대본 붙여넣기...&#10;&#10;예: 여러분 동전 하나 던져서 살고 죽는 게임 해보신 적 있으십니까?"></textarea>
+<button class="btn btn-blue" id="makeBtn">▶ MP3 만들기</button>
+<button class="btn btn-black" id="toEditorBtn" style="display:none">→ 타짱 에디터에서 이 MP3 사용하기</button>
 
-    <button id="makeBtn" class="btn" onclick="makeMP3()">▶ MP3 만들기 (다운로드)</button>
-    <button id="editorBtn" class="btn2" onclick="goEditor()">→ 타짱 에디터에서 이 MP3 사용하기</button>
-    
-    <div id="status" class="status"></div>
+<div class="status" id="status"></div>
 
-    <div class="hint">
-      • 폰에서도 작동, iPhone/Android 모두 지원<br>
-      • 생성된 MP3는 다운로드 폴더에 저장 후, 타짱 에디터(v0.83) 하단 '오디오' → '+ 오디오' 에서 불러오면 됨<br>
-      • 나중엔 자동 연동 예정
-    </div>
+<div class="history" id="historyBox">
+<h3>📁 생성 기록 (이 폰/브라우저에 저장된 목록)</h3>
+<div id="histList"><div style="font-size:13px;color:#888">아직 만든 MP3가 없습니다. MP3를 만들면 여기에 표시됩니다.</div></div>
+</div>
 
-    <div class="setting">
-      백엔드 URL: <input id="backendUrl" type="text" style="width:260px" value="https://tazzangmp3.onrender.com/tts">
-    </div>
-  </div>
-
-  <div class="foot">kinocine.github.io/tazzang/tazzangmp3/ · v1.0 · PC용은 C:\2026tazzang\tts_studio_v3.py</div>
+<div class="small">
+• 폰에서도 작동, iPhone/Android 모두 지원<br>
+• 생성된 MP3는 다운로드 폴더에 저장 후, 타짱 에디터(v0.83) 하단 '오디오' → '+ 오디오' 에서 선택하면 됨<br>
+• 나중엔 자동 연동 예정<br>
+<div style="margin-top:6px">백엔드 URL: <input id="backend" value="https://tazzangmp3.onrender.com/tts" style="width:70%;font-size:11px;padding:4px"></div>
+</div>
+</div>
+<div class="small" style="margin-top:10px">kinocine.github.io/tazzang/tazzangmp3/ · v1.1 · PC용은 C:\2026tazzangWtts_studio_v3.py</div>
 </div>
 
 <script>
-// 백엔드 URL 저장 - 실제 배포 주소로 고정
-const defaultBackend = "https://tazzangmp3.onrender.com/tts";
-document.getElementById('backendUrl').value = localStorage.getItem('tazzang_backend') || defaultBackend;
-document.getElementById('backendUrl').addEventListener('change', e=>{
-  localStorage.setItem('tazzang_backend', e.target.value);
-});
+const $ = id=>document.getElementById(id);
+const projectInput=$('project');
+const voiceSel=$('voice');
+const scriptInput=$('script');
+const preview=$('preview');
+const statusBox=$('status');
+const makeBtn=$('makeBtn');
+const toEditorBtn=$('toEditorBtn');
+const backendInput=$('backend');
+const histList=$('histList');
 
-let lastBlobUrl = null;
-let lastFileName = null;
+function sanitize(n){return n.replace(/[\\\/:*?"<>|]/g,'_').replace(/\s+/g,'_').slice(0,40)||'무제';}
+function updatePreview(){
+  const clean=sanitize(projectInput.value);
+  const v=voiceSel.value.includes('SunHi')?'SunHi':'InJoon';
+  const d=new Date();
+  const mm=String(d.getMonth()+1).padStart(2,'0');
+  const dd=String(d.getDate()).padStart(2,'0');
+  const hh=String(d.getHours()).padStart(2,'0');
+  const mi=String(d.getMinutes()).padStart(2,'0');
+  preview.textContent=`${clean}_${mm}${dd}_${hh}${mi}_${v}.mp3`;
+}
+projectInput.addEventListener('input',updatePreview);
+voiceSel.addEventListener('change',updatePreview);
+updatePreview();
 
-async function makeMP3(){
-  const text = document.getElementById('text').value.trim();
-  const project = document.getElementById('project').value.trim() || "무제";
-  const voice = document.getElementById('voice').value;
-  const backend = document.getElementById('backendUrl').value.trim();
-  const btn = document.getElementById('makeBtn');
-  const status = document.getElementById('status');
+function loadHistory(){
+  const h=JSON.parse(localStorage.getItem('tazzang_mp3_hist')||'[]');
+  if(!h.length){histList.innerHTML='<div style="font-size:13px;color:#888">아직 만든 MP3가 없습니다. MP3를 만들면 여기에 표시됩니다.</div>';return;}
+  histList.innerHTML='';
+  h.slice().reverse().forEach(item=>{
+    const div=document.createElement('div');
+    div.className='hist-item';
+    div.innerHTML=`<b>📄 ${item.name}</b><span>${item.date} · ${item.voice}</span>`;
+    histList.appendChild(div);
+  });
+}
+loadHistory();
 
-  if(!text){ alert('대본을 입력하세요'); return; }
-  if(backend.includes('YOUR-RENDER-URL')){
-    alert('아직 백엔드(Render) 주소를 설정 안 했어요.\n\n1. Render에 web-tts 배포\n2. 그 주소(https://...onrender.com/tts)를 아래 백엔드 URL 칸에 넣고 다시 시도\n\n지금은 PC용 tts_studio_v3.py로 먼저 테스트해보세요.');
-    document.getElementById('backendUrl').focus();
-    return;
-  }
+function addHistory(name,voice){
+  const h=JSON.parse(localStorage.getItem('tazzang_mp3_hist')||'[]');
+  h.push({name,voice,date:new Date().toLocaleString()});
+  if(h.length>50) h.shift();
+  localStorage.setItem('tazzang_mp3_hist',JSON.stringify(h));
+  loadHistory();
+}
 
-  btn.disabled = true;
-  btn.innerText = "⏳ 변환 중... 10~15초 (첫 실행은 50초)";
-  status.style.display = "block";
-  status.innerText = `서버에 요청 중... [${project}] ${voice}\n서버가 자고 있으면 50초 정도 걸릴 수 있어요.`;
-
+makeBtn.onclick=async()=>{
+  const text=scriptInput.value.trim();
+  const project=projectInput.value.trim()||'무제';
+  const voice=voiceSel.value;
+  const backend=backendInput.value.trim();
+  if(!text){alert('대본을 입력하세요');return;}
+  makeBtn.disabled=true;
+  makeBtn.textContent='⏳ 서버에서 음성 만드는 중... (10~20초)';
+  statusBox.style.display='block';
+  statusBox.style.background='#fff3cd';
+  statusBox.textContent='서버 깨우는 중... 첫 요청은 30초 걸릴 수 있습니다 (Render 무료 플랜)';
   try{
-    const formData = new FormData();
-    formData.append('text', text);
-    formData.append('project', project);
-    formData.append('voice', voice === 'ko-KR-SunHiNeural' ? '여자 SunHi (감성 리뷰)' : '남자 InJoon (담백 리뷰)');
-
-    const res = await fetch(backend, { method:'POST', body: formData });
-    if(!res.ok){
-      const err = await res.text();
-      throw new Error(err);
-    }
-    const blob = await res.blob();
-    const disposition = res.headers.get('Content-Disposition');
-    let filename = project + "_" + new Date().toISOString().slice(5,10).replace('-','') + ".mp3";
-    if(disposition){
-      const m = disposition.match(/filename="?([^"]+)"?/);
-      if(m) filename = m[1];
-    }
-
-    const url = URL.createObjectURL(blob);
-    lastBlobUrl = url;
-    lastFileName = filename;
-
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-
-    status.innerText = `✅ 완성! ${filename} 다운로드됨. 이제 타짱 에디터에서 사용할 수 있어요.`;
-    document.getElementById('editorBtn').style.display = "block";
-    btn.innerText = "✅ 다시 만들기";
+    const fd=new FormData();
+    fd.append('text',text);
+    fd.append('project',project);
+    fd.append('voice',voice);
+    const res=await fetch(backend,{method:'POST',body:fd});
+    if(!res.ok){const t=await res.text();throw new Error(t);}
+    const blob=await res.blob();
+    const clean=sanitize(project);
+    const d=new Date();
+    const mm=String(d.getMonth()+1).padStart(2,'0');
+    const dd=String(d.getDate()).padStart(2,'0');
+    const filename=`${clean}_${mm}${dd}.mp3`;
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;a.download=filename;a.click();
+    statusBox.style.background='#e8f5e9';
+    statusBox.innerHTML=`✅ 완성! <b>${filename}</b> 다운로드됨. 다운로드 폴더에서 확인하세요.<br>이제 타짱 에디터에서 사용할 수 있어요.`;
+    addHistory(filename,voice.includes('SunHi')?'SunHi':'InJoon');
+    toEditorBtn.style.display='block';
+    toEditorBtn.onclick=()=>{window.location.href='https://kinocine.github.io/tazzang/';};
   }catch(e){
-    status.innerText = "❌ 오류: " + e.message + "\n\nRender 서버가 자고 있을 수 있어요. 30초 후 다시 시도해보세요.";
-    alert("오류: " + e.message);
-    btn.innerText = "▶ MP3 만들기 (다시 시도)";
+    statusBox.style.background='#fdecea';
+    statusBox.textContent='❌ 실패: '+e.message+' (Render가 자고 있으면 30초 후 다시 시도해보세요)';
   }finally{
-    btn.disabled = false;
+    makeBtn.disabled=false;
+    makeBtn.textContent='✅ 다시 만들기';
   }
-}
-
-function goEditor(){
-  if(lastBlobUrl){
-    alert('방금 만든 MP3는 다운로드 폴더에 있어요.\n\n타짱 에디터(tazzang/)로 이동해서 하단 [오디오] → [+ 오디오]에서 그 파일을 선택하면 타임라인에 들어갑니다.');
-  }
-  location.href = "../";
-}
+};
 </script>
 </body>
 </html>
