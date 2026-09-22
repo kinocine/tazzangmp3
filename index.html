@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>타짱MP3 모바일 v1.1</title>
+<title>타짱MP3 공용 v1.3 - 진단 + 외국어</title>
 <style>
 *{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 body{background:#f5f5f7;margin:0;padding:12px;color:#111}
-.card{background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.06);max-width:600px;margin:0 auto}
+.card{background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.06);max-width:620px;margin:0 auto}
 h1{font-size:20px;margin:0 0 4px;display:flex;align-items:center;gap:8px}
 .badge{font-size:11px;background:#111;color:#fff;padding:3px 8px;border-radius:999px}
 label{font-weight:700;font-size:14px;margin:14px 0 6px;display:block}
@@ -16,141 +16,156 @@ textarea{min-height:160px;resize:vertical}
 .btn{width:100%;padding:14px;border:0;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer;margin-top:10px}
 .btn-blue{background:#1a73e8;color:#fff}
 .btn-black{background:#111;color:#fff}
-.status{margin-top:12px;padding:10px 12px;background:#e8f5e9;border-radius:10px;font-size:13px;display:none}
+.btn-gray{background:#eef2ff;color:#334;border:1px dashed #99a;display:block;font-size:13px;padding:10px}
+.status{margin-top:12px;padding:10px 12px;border-radius:10px;font-size:13px;display:none}
+.voices-box{margin-top:10px;background:#f7f8ff;border:1px solid #dde;border-radius:10px;padding:10px;font-size:12px;line-height:1.5;max-height:320px;overflow:auto}
 .history{margin-top:18px;border-top:1px solid #eee;padding-top:12px}
-.history h3{font-size:14px;margin:0 0 8px}
-.hist-item{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:#f9f9fb;border-radius:8px;margin-bottom:6px;font-size:13px}
-.hist-item b{max-width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hist-item{display:flex;justify-content:space-between;padding:8px 10px;background:#f9f9fb;border-radius:8px;margin-bottom:6px;font-size:13px}
 .small{font-size:11px;color:#777;margin-top:8px;text-align:center}
 a.top-link{position:absolute;top:12px;right:12px;font-size:12px;text-decoration:none;border:1px solid #ddd;padding:6px 10px;border-radius:999px;background:#fff;color:#333}
 .wrap{position:relative}
+.tag{font-size:10px;padding:2px 6px;border-radius:999px;margin-left:4px}
+.tag-ko{background:#e8f5e9} .tag-en{background:#e3f2fd} .tag-ja{background:#fff3e0} .tag-zh{background:#fce4ec}
 </style>
 </head>
 <body>
 <div class="wrap">
-<a class="top-link" href="https://kinocine.github.io/tazzang/">← 타짱 에디터</a>
-<h1>🎙️ 타짱MP3 <span class="badge">모바일</span></h1>
+<a class="top-link" href="https://kinocine.github.io/tazzang/index.html">← 타짱 에디터</a>
+<h1>🎙️ 타짱MP3 <span class="badge">공용 v1.3</span></h1>
 <div class="card">
-<label>1. 목소리 (MS 서버)</label>
-<select id="voice">
-<option>여자 SunHi (감성 리뷰) - 추천</option>
-<option>남자 InJoon (담백 리뷰)</option>
-</select>
+<label>1. 목소리 (기본 2개 안정)</label>
+<select id="voice"></select>
+<div style="font-size:11px;color:#666;margin-top:4px">기본은 SunHi/InJoon 2개가 100% 안정. 외국어는 진단 후 사용 권장</div>
+
+<button class="btn btn-gray" id="checkVoices">🔍 진단: 지금 서버에서 되는 목소리 실시간 확인 (한국어+영어/일본어/중국어)</button>
+<div class="voices-box" id="voicesBox" style="display:none"></div>
 
 <label>2. 파일명 / 프로젝트명</label>
-<input id="project" value="이창동인터뷰_0922" placeholder="예: 이창동인터뷰">
-<div style="font-size:12px;color:#666;margin-top:4px">→ <span id="preview">이창동인터뷰_0922_SunHi.mp3</span> 형식으로 저장됨. 나중에 tazzang 에디터 오디오 트랙에 바로 넣으면 됨.</div>
+<input id="project" value="이창동인터뷰_0922">
+<div style="font-size:12px;color:#666;margin-top:4px">→ <span id="preview"></span></div>
 
 <label>3. 대본</label>
-<textarea id="script" placeholder="여기에 대본을 붙여넣으세요...">여러분 동전 하나 던져서 살고 죽는 게임 해보신 적 있으십니까?</textarea>
+<textarea id="script">여러분 동전 하나 던져서 살고 죽는 게임 해보신 적 있으십니까?</textarea>
 
 <button class="btn btn-blue" id="makeBtn">▶ MP3 만들기</button>
-<button class="btn btn-black" id="toEditorBtn" style="display:none">→ 타짱 에디터에서 이 MP3 사용하기</button>
+<button class="btn btn-black" id="toEditorBtn" style="display:none">→ 타짱 에디터에서 이 MP3 사용하기 (https://kinocine.github.io/tazzang/index.html)</button>
 
 <div class="status" id="status"></div>
 
-<div class="history" id="historyBox">
-<h3>📁 생성 기록 (이 폰/브라우저에 저장된 목록)</h3>
-<div id="histList"><div style="font-size:13px;color:#888">아직 만든 MP3가 없습니다. MP3를 만들면 여기에 표시됩니다.</div></div>
-</div>
+<div class="history"><h3 style="font-size:14px;margin:0 0 8px">📁 생성 기록</h3><div id="histList"></div></div>
 
 <div class="small">
-• 폰에서도 작동, iPhone/Android 모두 지원<br>
-• 생성된 MP3는 다운로드 폴더에 저장 후, 타짱 에디터(v0.83) 하단 '오디오' → '+ 오디오' 에서 선택하면 됨<br>
-• 나중엔 자동 연동 예정<br>
-<div style="margin-top:6px">백엔드 URL: <input id="backend" value="https://tazzangmp3.onrender.com/tts" style="width:70%;font-size:11px;padding:4px"></div>
+• PC/모바일 공용<br>
+백엔드: <input id="backend" value="https://tazzangmp3.onrender.com/tts" style="width:68%;font-size:11px;padding:4px"><br>
+진단: <input id="backendVoices" value="https://tazzangmp3.onrender.com/voices" style="width:68%;font-size:11px;padding:4px;margin-top:4px">
 </div>
 </div>
-<div class="small" style="margin-top:10px">kinocine.github.io/tazzang/tazzangmp3/ · v1.1 · PC용은 C:\2026tazzangWtts_studio_v3.py</div>
+<div class="small" style="margin-top:10px">kinocine.github.io/tazzangmp3/ · v1.3</div>
 </div>
 
 <script>
-const $ = id=>document.getElementById(id);
-const projectInput=$('project');
-const voiceSel=$('voice');
-const scriptInput=$('script');
-const preview=$('preview');
-const statusBox=$('status');
-const makeBtn=$('makeBtn');
-const toEditorBtn=$('toEditorBtn');
-const backendInput=$('backend');
-const histList=$('histList');
+const $=id=>document.getElementById(id);
+const DEFAULT_VOICES = [
+  {display:"여자 SunHi (감성 리뷰) - 추천 ✅", id:"ko-KR-SunHiNeural", cat:"ko"},
+  {display:"남자 InJoon (담백 리뷰) ✅", id:"ko-KR-InJoonNeural", cat:"ko"},
+  {display:"여자 JiMin (밝은 청년)", id:"ko-KR-JiMinNeural", cat:"ko"},
+  {display:"여자 SeoHyeon (차분한 낭독)", id:"ko-KR-SeoHyeonNeural", cat:"ko"},
+  {display:"남자 BongJin (구수한 아저씨)", id:"ko-KR-BongJinNeural", cat:"ko"},
+  {display:"남자 GookMin (뉴스 앵커)", id:"ko-KR-GookMinNeural", cat:"ko"},
+  {display:"남자 Hyunsu (친근한 청년)", id:"ko-KR-HyunsuNeural", cat:"ko"},
+  {display:"영어 Jenny (미국 여성) 🇺🇸", id:"en-US-JennyNeural", cat:"en"},
+  {display:"일본어 Nanami (일본 여성) 🇯🇵", id:"ja-JP-NanamiNeural", cat:"ja"},
+  {display:"중국어 Xiaoxiao (중국 여성) 🇨🇳", id:"zh-CN-XiaoxiaoNeural", cat:"zh"},
+];
+
+const voiceSel=$('voice'), projectInput=$('project'), scriptInput=$('script'), preview=$('preview');
+const statusBox=$('status'), makeBtn=$('makeBtn'), toEditorBtn=$('toEditorBtn');
+const backendInput=$('backend'), backendVoicesInput=$('backendVoices'), voicesBox=$('voicesBox'), checkBtn=$('checkVoices'), histList=$('histList');
+
+function populate(list){
+  voiceSel.innerHTML='';
+  list.forEach(v=>{
+    const opt=document.createElement('option');
+    opt.value=v.id; opt.textContent=v.display;
+    voiceSel.appendChild(opt);
+  });
+}
+populate(DEFAULT_VOICES.slice(0,2)); // 기본은 안정 2개만
 
 function sanitize(n){return n.replace(/[\\\/:*?"<>|]/g,'_').replace(/\s+/g,'_').slice(0,40)||'무제';}
 function updatePreview(){
   const clean=sanitize(projectInput.value);
-  const v=voiceSel.value.includes('SunHi')?'SunHi':'InJoon';
-  const d=new Date();
-  const mm=String(d.getMonth()+1).padStart(2,'0');
-  const dd=String(d.getDate()).padStart(2,'0');
-  const hh=String(d.getHours()).padStart(2,'0');
-  const mi=String(d.getMinutes()).padStart(2,'0');
-  preview.textContent=`${clean}_${mm}${dd}_${hh}${mi}_${v}.mp3`;
+  const d=new Date(); const mm=String(d.getMonth()+1).padStart(2,'0'); const dd=String(d.getDate()).padStart(2,'0');
+  const sel=voiceSel.options[voiceSel.selectedIndex]; const vid=sel? sel.value : 'ko-KR-SunHiNeural';
+  const short=vid.split('-').pop().replace('Neural','');
+  preview.textContent=`${clean}_${mm}${dd}_${short}.mp3`;
 }
 projectInput.addEventListener('input',updatePreview);
 voiceSel.addEventListener('change',updatePreview);
 updatePreview();
 
-function loadHistory(){
-  const h=JSON.parse(localStorage.getItem('tazzang_mp3_hist')||'[]');
-  if(!h.length){histList.innerHTML='<div style="font-size:13px;color:#888">아직 만든 MP3가 없습니다. MP3를 만들면 여기에 표시됩니다.</div>';return;}
-  histList.innerHTML='';
-  h.slice().reverse().forEach(item=>{
-    const div=document.createElement('div');
-    div.className='hist-item';
-    div.innerHTML=`<b>📄 ${item.name}</b><span>${item.date} · ${item.voice}</span>`;
-    histList.appendChild(div);
-  });
-}
-loadHistory();
+function loadHist(){const h=JSON.parse(localStorage.getItem('tazzang_mp3_hist')||'[]'); if(!h.length){histList.innerHTML='<div style="font-size:13px;color:#888">아직 없음</div>';return;} histList.innerHTML=''; h.slice().reverse().forEach(i=>{const d=document.createElement('div'); d.className='hist-item'; d.innerHTML=`<b>📄 ${i.name}</b><span>${i.date}</span>`; histList.appendChild(d);});}
+function addHist(name){const h=JSON.parse(localStorage.getItem('tazzang_mp3_hist')||'[]'); h.push({name,date:new Date().toLocaleString()}); if(h.length>50)h.shift(); localStorage.setItem('tazzang_mp3_hist',JSON.stringify(h)); loadHist();}
+loadHist();
 
-function addHistory(name,voice){
-  const h=JSON.parse(localStorage.getItem('tazzang_mp3_hist')||'[]');
-  h.push({name,voice,date:new Date().toLocaleString()});
-  if(h.length>50) h.shift();
-  localStorage.setItem('tazzang_mp3_hist',JSON.stringify(h));
-  loadHistory();
-}
+checkBtn.onclick=async()=>{
+  const url=backendVoicesInput.value.trim();
+  voicesBox.style.display='block';
+  voicesBox.innerHTML='⏳ 진단 중... MS 서버에 물어보는 중 (10~20초)';
+  try{
+    const res=await fetch(url); const data=await res.json();
+    if(data.error) throw new Error(data.error);
+    let html=`<b>서버시간 ${data.server_time}</b><br>개수: 한국어 ${data.counts['ko-KR']}개, 영어 ${data.counts['en-US']}개, 일본어 ${data.counts['ja-JP']}개, 중국어 ${data.counts['zh-CN']}개<br><br>`;
+    // 카테고리별
+    const cats={ko:[],en:[],ja:[],zh:[]};
+    data.our_mapping_check.forEach(m=>{
+      const id=m.id;
+      let cat='ko'; if(id.startsWith('en-'))cat='en'; else if(id.startsWith('ja-'))cat='ja'; else if(id.startsWith('zh-'))cat='zh';
+      cats[cat].push(m);
+    });
+    function sec(title, arr){
+      html+=`<b>${title}</b><br>`;
+      arr.forEach(m=>{html+=`${m.status} ${m.display} <code>${m.id}</code><br>`;});
+      html+='<br>';
+    }
+    sec('🇰🇷 한국어', cats.ko);
+    sec('🇺🇸 영어', cats.en);
+    sec('🇯🇵 일본어', cats.ja);
+    sec('🇨🇳 중국어', cats.zh);
+    voicesBox.innerHTML=html;
+
+    // 되는 것만 드롭다운에 전체 표시
+    const available = data.our_mapping_check.filter(m=>m.found).map(m=>{
+      const orig=DEFAULT_VOICES.find(d=>d.id===m.id) || {display:m.display, id:m.id};
+      return orig;
+    });
+    if(available.length){
+      populate(available);
+      updatePreview();
+      voicesBox.innerHTML+=`<hr><b>✅ ${available.length}개 목소리 활성화됨! 위 드롭다운에서 선택 가능</b>`;
+    }
+  }catch(e){voicesBox.innerHTML='❌ 실패: '+e.message;}
+};
 
 makeBtn.onclick=async()=>{
-  const text=scriptInput.value.trim();
-  const project=projectInput.value.trim()||'무제';
-  const voice=voiceSel.value;
+  const text=scriptInput.value.trim(); const project=projectInput.value.trim()||'무제';
+  const voiceId=voiceSel.value; const voiceDisplay=voiceSel.options[voiceSel.selectedIndex].textContent;
   const backend=backendInput.value.trim();
-  if(!text){alert('대본을 입력하세요');return;}
-  makeBtn.disabled=true;
-  makeBtn.textContent='⏳ 서버에서 음성 만드는 중... (10~20초)';
-  statusBox.style.display='block';
-  statusBox.style.background='#fff3cd';
-  statusBox.textContent='서버 깨우는 중... 첫 요청은 30초 걸릴 수 있습니다 (Render 무료 플랜)';
+  if(!text){alert('대본 입력');return;}
+  makeBtn.disabled=true; makeBtn.textContent='⏳ 생성 중...'; statusBox.style.display='block'; statusBox.style.background='#fff3cd'; statusBox.textContent='서버 깨우는 중...';
   try{
-    const fd=new FormData();
-    fd.append('text',text);
-    fd.append('project',project);
-    fd.append('voice',voice);
+    const fd=new FormData(); fd.append('text',text); fd.append('project',project); fd.append('voice',voiceId);
     const res=await fetch(backend,{method:'POST',body:fd});
-    if(!res.ok){const t=await res.text();throw new Error(t);}
+    if(!res.ok){const t=await res.text(); throw new Error(t);}
     const blob=await res.blob();
-    const clean=sanitize(project);
-    const d=new Date();
-    const mm=String(d.getMonth()+1).padStart(2,'0');
-    const dd=String(d.getDate()).padStart(2,'0');
+    const clean=sanitize(project); const d=new Date(); const mm=String(d.getMonth()+1).padStart(2,'0'); const dd=String(d.getDate()).padStart(2,'0');
     const filename=`${clean}_${mm}${dd}.mp3`;
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement('a');
-    a.href=url;a.download=filename;a.click();
-    statusBox.style.background='#e8f5e9';
-    statusBox.innerHTML=`✅ 완성! <b>${filename}</b> 다운로드됨. 다운로드 폴더에서 확인하세요.<br>이제 타짱 에디터에서 사용할 수 있어요.`;
-    addHistory(filename,voice.includes('SunHi')?'SunHi':'InJoon');
-    toEditorBtn.style.display='block';
-    toEditorBtn.onclick=()=>{window.location.href='https://kinocine.github.io/tazzang/';};
-  }catch(e){
-    statusBox.style.background='#fdecea';
-    statusBox.textContent='❌ 실패: '+e.message+' (Render가 자고 있으면 30초 후 다시 시도해보세요)';
-  }finally{
-    makeBtn.disabled=false;
-    makeBtn.textContent='✅ 다시 만들기';
-  }
+    const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=filename; a.click();
+    statusBox.style.background='#e8f5e9'; statusBox.innerHTML=`✅ 완성! <b>${filename}</b><br>목소리: ${voiceDisplay}`;
+    addHist(filename);
+    toEditorBtn.style.display='block'; toEditorBtn.onclick=()=>window.location.href='https://kinocine.github.io/tazzang/index.html';
+  }catch(e){statusBox.style.background='#fdecea'; statusBox.textContent='❌ 실패: '+e.message;}
+  finally{makeBtn.disabled=false; makeBtn.textContent='✅ 다시 만들기';}
 };
 </script>
 </body>
