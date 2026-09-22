@@ -33,7 +33,7 @@
 <body>
 <div class="wrap">
   <div class="header">
-    <h1>🎙️ 타짱MP3 <span class="badge">모바일</span></h1>
+    <h1>🎙 타짱MP3 <span class="badge">모바일</span></h1>
     <a href="../">← 타짱 에디터</a>
   </div>
 
@@ -65,7 +65,7 @@
     </div>
 
     <div class="setting">
-      백엔드 URL: <input id="backendUrl" type="text" style="width:220px" placeholder="https://xxxx.onrender.com/tts">
+      백엔드 URL: <input id="backendUrl" type="text" style="width:260px" value="https://tazzangmp3.onrender.com/tts">
     </div>
   </div>
 
@@ -73,8 +73,8 @@
 </div>
 
 <script>
-// 백엔드 URL 저장
-const defaultBackend = "https://YOUR-RENDER-URL.onrender.com/tts"; // 여기에 Render 배포 후 주소 넣기
+// 백엔드 URL 저장 - 실제 배포 주소로 고정
+const defaultBackend = "https://tazzangmp3.onrender.com/tts";
 document.getElementById('backendUrl').value = localStorage.getItem('tazzang_backend') || defaultBackend;
 document.getElementById('backendUrl').addEventListener('change', e=>{
   localStorage.setItem('tazzang_backend', e.target.value);
@@ -99,9 +99,9 @@ async function makeMP3(){
   }
 
   btn.disabled = true;
-  btn.innerText = "⏳ 변환 중... 10~15초";
+  btn.innerText = "⏳ 변환 중... 10~15초 (첫 실행은 50초)";
   status.style.display = "block";
-  status.innerText = `서버에 요청 중... [${project}] ${voice}`;
+  status.innerText = `서버에 요청 중... [${project}] ${voice}\n서버가 자고 있으면 50초 정도 걸릴 수 있어요.`;
 
   try{
     const formData = new FormData();
